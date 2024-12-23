@@ -1,9 +1,12 @@
 import asyncio
 import websockets
 from aioconsole import ainput, aprint
+from fastapi import Depends
+
+from routes.auth import oauth2_scheme
 
 
-async def websocket_client_chat(username: str):
+async def websocket_client_chat(username: str, token: str = Depends(oauth2_scheme)):
     uri = "ws://localhost:8000/ws/base"
     try:
         async with websockets.connect(uri, open_timeout=None) as websocket:
@@ -35,4 +38,5 @@ async def websocket_client_chat(username: str):
 
 if __name__ == "__main__":
     username = input("Enter your name: ")
-    asyncio.run(websocket_client_chat(username))
+    token = input("Enter your token: ")
+    asyncio.run(websocket_client_chat(username, token))

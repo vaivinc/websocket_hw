@@ -1,3 +1,4 @@
+import jwt
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPBearer
 from starlette import status
@@ -5,6 +6,7 @@ from starlette import status
 from db import fake_users_db
 from werkzeug.security import check_password_hash
 from tools import create_token, decode_token
+from settings import settings_app
 
 route = APIRouter()
 
@@ -45,3 +47,11 @@ async def get_current_admin(current_user=Depends(get_current_user)):
             headers={"WWW-Authenticate": "Bearer"},
         )
     return current_user
+
+
+def verify_jwt(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, settings_app.SECRET_KEY, algorithms=["HS256"])
+        return payload
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=403, detail="Invalid authentication credentials")

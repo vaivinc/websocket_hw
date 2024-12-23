@@ -15,8 +15,7 @@ def generate_data():
         "Google": round(random.uniform(2700, 2800), 2),
         "Amazon": round(random.uniform(3100, 3200), 2)
     }
-    new_stock_data = json.dump(stock_data)
-    return new_stock_data
+    return json.dump(stock_data)
 
 
 @app.websocket("/ws_chat")
@@ -30,10 +29,10 @@ async def websocket_chat(websocket: WebSocket):
             print(data)
             await asyncio.sleep(3)
             for connection in active_connections:
-                await connection.send_text(f"{data}")
+                await connection.send_text(['username'])
 
     except WebSocketDisconnect:  # Управління З'єднанням
-        print("Client raise disconnect")
+        print(f"User ['username'] disconnected")
 
     except Exception as e:
         print(f"Critical Error: {e}")
