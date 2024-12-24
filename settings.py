@@ -19,7 +19,7 @@ class Settings(BaseSettings):
 
     SECRET_KEY: str = "secret_key"
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MIN: int = 1
+    ACCESS_TOKEN_EXPIRE_MIN: int = 20
 
     def pg_dsn(self):
         return (f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}"
