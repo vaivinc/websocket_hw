@@ -39,7 +39,6 @@ async def websocket_endpoint(websocket: WebSocket, token: str = Depends(verify_j
             await websocket.close()
 
 
-app.include_router(route_user, prefix="/users", tags=["users"])
 app.include_router(route_auth, prefix="/auth", tags=["auth"])
 
 if __name__ == "__main__":
